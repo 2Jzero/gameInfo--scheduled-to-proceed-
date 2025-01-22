@@ -35,6 +35,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 	// Selenium 의존성 추가
 	implementation 'org.seleniumhq.selenium:selenium-java:4.6.0'
+
 }
 
 tasks.named('test') {
