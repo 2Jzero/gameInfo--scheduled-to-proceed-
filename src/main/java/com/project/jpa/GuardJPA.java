@@ -17,10 +17,6 @@ public class GuardJPA {
     @Column(name = "gb_sq") // 길드보스 순서
     private int sq;
 
-    // 길드 보스 번호
-    @Column(name = "gb_no")
-    private int number;
-
     // 길드 보스 이름
     @Column(length = 100, name = "gb_name")
     private String name;
