@@ -32,36 +32,32 @@ public class GuardCrawlingService {
         ArrayList<String> bossNameList = new ArrayList<>();
 
         // 크롤링한 결과를 저장하기 위한 변수
-        String bossName;
+        String bossAlt;
         String bossImg;
-        String bossElement;
 
         // 각 이미지의 src 속성 출력
         for (WebElement image : imagesInModal) {
-            // img요소의 부모요소
-            WebElement buttonDiv = image.findElement(By.xpath(".."));
-            // 이미지의 이름 요소, 이거 속성 이름이랑 구분해서 크롤링해야됨
-            bossName = image.getAttribute("alt");
-            // 보스 이미지 소스
+            // 보스의 이름과 속성 정의, 이거 속성 이름이랑 구분해서 크롤링해야됨
+            bossAlt = image.getAttribute("alt");
+            // 보스 이미지와 속성 이미지
             bossImg = image.getAttribute("src");
-            // 이미지의 속성 요소
-            bossElement = image.getAttribute("src");
             if (bossImg != null && !bossImg.isEmpty()) {
-                // 이미지가 있으면 이름과 이미지 소스 추가
-                //bossNameList.add(bossName);
-                //bossImgList.add(bossImg);
-                System.out.println("보스 이름 : " + bossName + "--- 보스 이미지 : " +  bossImg);
-                // 이미지 속성 중 비활성화 속성은 'x'로 추가
-                if(buttonDiv.getAttribute("class").contains("pointer-events-none")) {
-                    //bossElementList.add("x");
-                    System.out.println("보스 속성 : " + "x");
+                // alt에서 보스 이름과 속성을 구분짓기 위해 width로 조건문 구현
+                String width = image.getAttribute("width");
+                if(width.equals("100")) {
+                    System.out.println("보스 이름 : " + bossAlt + "--- 보스 이미지 : " +  bossImg);
                 } else {
-                    //bossElementList.add(bossElement);
-                    System.out.println("보스 속성 : " + bossElement);
+                    // img요소의 부모요소, 두칸 올라가서 접근
+                    WebElement buttonDiv = image.findElement(By.xpath("..//.."));
+                    // 이미지 속성 중 비활성화 속성은 'x'로 추가
+                    if(buttonDiv.getAttribute("class").contains("opacity")) {
+                        System.out.println("보스 속성 : " + bossAlt + "--- 속성 이미지 : x");
+                    } else {
+                        System.out.println("보스 속성 : " + bossAlt + "--- 속성 이미지 : " + bossImg);
+                    }
                 }
             }
         }
-
         driver.quit();
 
         return "";

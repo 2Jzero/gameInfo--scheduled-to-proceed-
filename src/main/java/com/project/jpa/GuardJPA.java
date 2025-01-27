@@ -18,14 +18,18 @@ public class GuardJPA {
     private int sq;
 
     // 길드 보스 이름
-    @Column(length = 100, name = "gb_name")
-    private String name;
+    @Column(length = 20, name = "gb_name")
+    private String bossName;
+
+    // 길드 보스 속성 이름
+    @Column(length = 20, name ="gb_element")
+    private String bossElement;
 
     // 길드 보스 이미지
     @Column(length = 300, name = "gb_image_boss")
     private String mainImg;
 
     // 길드 보스 속성 이미지
-    @Column(length = 12, name = "gb_image_property")
+    @Column(length = 12, name = "gb_image_element")
     private String propertyImg;
 }
