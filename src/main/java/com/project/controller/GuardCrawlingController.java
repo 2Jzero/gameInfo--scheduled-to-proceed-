@@ -19,11 +19,7 @@ public class GuardCrawlingController {
 
     @GetMapping("/guardCrawling")
     public String GuardCrawling(Model model) {
-        String imageUrl = gService.GuardCrawling();
 
-        // Model에 이미지 URL을 추가
-        model.addAttribute("imageUrl", imageUrl);
-
-        return "guardLib";
+        return "guardCrawling.html";
     }
 }

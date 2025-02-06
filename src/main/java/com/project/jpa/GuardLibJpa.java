@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface GuardLibJpa extends JpaRepository<GuardJPA, Integer> {
 
-    // db의 스케줄 리스트 화면에 보여줌
-    //@Query(value = "select ds_sq, ds_no, ds_title, ds_ox, ds_owner, ds_point from daily_schedule where ds_owner = :userId",  nativeQuery = true)
-    //public List<GuardJPA> dailyList(@Param("userId") String userId);
+    // db의 리스트 화면에 보여줌
+    @Query(value = "select gb_sq, gb_name, gb_element, gb_element_is_active, gb_image_boss from guild_boss", nativeQuery = true)
+    public List<GuardJPA> mainPage();
 
 }
