@@ -18,12 +18,19 @@ public class MainController {
         this.mService = mService;
     }
 
+    // 메인페이지
     @GetMapping("guardLib")
     public String mainPage(Model model) {
 
         List<GuardJPA> bossList = mService.mainPage();
 
         model.addAttribute("bossList", bossList);
+
+        return "guardLib";
+    }
+    
+    // 보스 공략 팀 정보 페이지
+    public String bossAttackTeam() {
 
         return "guardLib";
     }
