@@ -88,7 +88,7 @@ public class GuardCrawlingService {
                 guardJPA.setMainImg(bossImgList.get(i));
 
                 guardJPA.setBossElement(elementIterator.next());
-                guardJPA.setElementIsActive(bossIsActive.get(m));
+                guardJPA.setElementIsActive(bossIsActive.get(i * 6 + m)); // 한 보스 묶음을 6개로 두고 계산
 
                 guardLibJpa.save(guardJPA);
 

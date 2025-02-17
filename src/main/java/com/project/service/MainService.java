@@ -16,13 +16,13 @@ public class MainService {
 
     @Autowired
     public MainService(GuardLibJpa guardLibJpa) {
-        this.guardLibJpa = guardLibJpa;
+        this.guardLibJpa = guardLibJpa; 
     }
 
     public List<GuardJPA> mainPage() {
         List<GuardJPA> bossList = new ArrayList<>();
 
-        bossList = guardLibJpa.mainPage();
+        bossList = guardLibJpa.mainPage(); // 내일 크롤링부터 다시, 구조 다시 짜야됨
 
         return bossList;
     }

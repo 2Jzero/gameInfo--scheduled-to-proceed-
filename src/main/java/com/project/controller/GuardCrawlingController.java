@@ -1,10 +1,13 @@
 package com.project.controller;
 
+import com.project.jpa.GuardJPA;
 import com.project.service.GuardCrawlingService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @Controller
 public class GuardCrawlingController {
@@ -19,6 +22,8 @@ public class GuardCrawlingController {
 
     @GetMapping("/guardCrawling")
     public String GuardCrawling(Model model) {
+
+        String crawling = gService.GuardCrawling();
 
         return "guardCrawling.html";
     }
