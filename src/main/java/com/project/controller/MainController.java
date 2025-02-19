@@ -1,5 +1,6 @@
 package com.project.controller;
 
+import com.project.dto.BossInfoDTO;
 import com.project.jpa.GuardJPA;
 import com.project.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class MainController {
     @GetMapping("guardLib")
     public String mainPage(Model model) {
 
-        List<GuardJPA> bossList = mService.mainPage();
+        List<BossInfoDTO> bossList = mService.mainPage();
 
         model.addAttribute("bossList", bossList);
 

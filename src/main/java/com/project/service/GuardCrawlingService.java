@@ -1,7 +1,6 @@
 package com.project.service;
 
-import com.project.jpa.GuardJPA;
-import com.project.jpa.GuardLibJpa;
+import com.project.jpa.*;
 import jakarta.transaction.Transactional;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -19,11 +18,18 @@ import java.util.*;
 @Transactional
 public class GuardCrawlingService {
 
-    private final GuardLibJpa guardLibJpa;
+    private final BossJpaRepository bossJpaRepository;
+    private final ElementJpaRepository elementJpaRepository;
+    private final BossElementJpaRepository bossElementJpaRepository;
 
     @Autowired
-    public GuardCrawlingService(GuardLibJpa guardLibJpa) {
-        this.guardLibJpa = guardLibJpa;
+    public GuardCrawlingService(BossJpaRepository bossJpaRepository, ElementJpaRepository elementJpaRepository,
+                                BossElementJpaRepository bossElementJpaRepository) {
+
+        this.bossJpaRepository = bossJpaRepository;
+        this.elementJpaRepository = elementJpaRepository;
+        this.bossElementJpaRepository = bossElementJpaRepository;
+
     }
 
     public String GuardCrawling() {
@@ -38,9 +44,12 @@ public class GuardCrawlingService {
         List<WebElement> imagesInModal = modal.findElements(By.tagName("img"));
 
         // 크롤링한 결과를 저장하기 위한 리스트들
-        ArrayList<String> bossImgList = new ArrayList<>();
-        Set<String> bossElementList = new LinkedHashSet<>();
         ArrayList<String> bossNameList = new ArrayList<>();
+        ArrayList<String> bossImgList = new ArrayList<>();
+
+        Set<String> bossElementName = new LinkedHashSet<>();
+        Set<String> bossElementImg = new LinkedHashSet<>();
+
         ArrayList<String> bossIsActive = new ArrayList<>();
 
 
@@ -66,7 +75,8 @@ public class GuardCrawlingService {
                     // img요소의 부모요소, 두칸 올라가서 접근
                     WebElement buttonDiv = image.findElement(By.xpath("..//.."));
                     // 이미지 속성 중 비활성화 속성은 'x'로 추가
-                    bossElementList.add(bossAlt);
+                    bossElementName.add(bossAlt);
+                    bossElementImg.add(bossImg);
                     if(buttonDiv.getAttribute("class").contains("opacity")) {
                         bossIsActive.add("X");
                         //System.out.println("보스 속성 : " + bossAlt + "--- 속성 이미지 : x");
@@ -78,19 +88,40 @@ public class GuardCrawlingService {
             }
         }
 
+        // set list에 들어있는 값 순차적으로 가져오기 위한 객체
+        Iterator<String> elementNameIterator = bossElementName.iterator();
+        Iterator<String> elementImgIterator = bossElementImg.iterator();
+
+        // 밑 반복문에서 사용하기 위함
+        List<ElementJPA> elementList = new ArrayList<>();
+
+        for(int i = 0; i < 6; i++) {
+            ElementJPA elementJPA = new ElementJPA();
+
+            elementJPA.setElementName(elementNameIterator.next());
+            elementJPA.setElementImg(elementImgIterator.next());
+
+            elementJpaRepository.save(elementJPA);
+            elementList.add(elementJPA);
+
+        }
+
         for(int i = 0; i < bossNameList.size(); i++) {
-            //db에 추가하기 위한 변수
-            Iterator<String> elementIterator = bossElementList.iterator(); // SET 값을 가져올 객체 생성
+            GuardJPA guardJPA = new GuardJPA();
+
+            guardJPA.setBossName(bossNameList.get(i));
+            guardJPA.setBossImg(bossImgList.get(i));
+
+            bossJpaRepository.save(guardJPA);
+
             for(int m = 0; m < 6; m++) {
-                GuardJPA guardJPA = new GuardJPA();
+                BossElementJPA bossElementJPA = new BossElementJPA();
+                bossElementJPA.setIsActive(bossIsActive.get(i * 6 + m)); // 한 보스 묶음을 6개로 두고 계산
 
-                guardJPA.setBossName(bossNameList.get(i));
-                guardJPA.setMainImg(bossImgList.get(i));
+                bossElementJPA.setBoss(guardJPA);
+                bossElementJPA.setElement(elementList.get(m));
 
-                guardJPA.setBossElement(elementIterator.next());
-                guardJPA.setElementIsActive(bossIsActive.get(i * 6 + m)); // 한 보스 묶음을 6개로 두고 계산
-
-                guardLibJpa.save(guardJPA);
+                bossElementJpaRepository.save(bossElementJPA);
 
             }
         }
@@ -101,8 +132,11 @@ public class GuardCrawlingService {
 //        for(String bossimage : bossImgList) {
 //            System.out.println("보스 이미지 : " + bossimage);
 //        }
-//        for(String bossele : bossElementList) {
+//        for(String bossele : bossElementName) {
 //            System.out.println("보스 속성 이름 : " + bossele);
+//        }
+//        for(String bosseleImg : bossElementImg) {
+//            System.out.println("보스 속성 이미지 : " + bosseleImg);
 //        }
 //        for(String active : bossIsActive) {
 //            System.out.println("보스 속성 유무 : " + active);

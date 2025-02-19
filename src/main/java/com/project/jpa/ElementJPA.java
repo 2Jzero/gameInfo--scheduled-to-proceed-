@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "Element")
+@Table(name = "element")
 @Getter // Builder 이용하여 객체 생성
 @Builder // AllArgsConstructor, NoArgsConstructor 같이 이용해야 컴파일 에러 발생 안함
 @AllArgsConstructor // 모든 필드 파라미터로 받는 생성자 자동 생성
@@ -14,8 +14,8 @@ public class ElementJPA {
 
     @Id // Primary Key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //AUTO_INCREMENT
-    @Column(name = "el_sq") // 길드보스 순서
-    private int sq;
+    @Column(name = "el_id") // 길드보스 순서
+    private int elementId;
 
     // 속성 이름
     @Column(length = 20, name = "el_name")
