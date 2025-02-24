@@ -25,6 +25,8 @@ public class MainController {
 
         List<BossInfoDTO> bossList = mService.mainPage();
 
+        System.out.println(bossList);
+
         model.addAttribute("bossList", bossList);
 
         return "guardLib";
