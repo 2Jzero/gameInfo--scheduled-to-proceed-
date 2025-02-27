@@ -7,16 +7,22 @@
 <table>
     <thead>
     <tr>
-        <th>Boss Name</th>
-        <th>Element</th>
-        <th>Image</th>
+        <th>보스</th>
+        <th>속성</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="boss : ${boss}">
-        <td th:text="${boss.bossName}"></td>
-        <td th:text="${boss.elementName}"></td>  <!-- bossElement -> elementName 수정 -->
-        <td><img th:src="${boss.bossImage}" alt="Boss Image"></td>  <!-- mainImg -> bossImage 수정 -->
+    <tr th:each="boss : ${bossList}">
+        <td>
+            <img th:src="@{${boss.bossImage}}" th:alt="${boss.bossName}" width="50" height="50"/>
+            <span th:text="${boss.bossName}"></span>
+        </td>
+        <td>
+                <span th:each="element, stat : ${boss.elementList}">
+                    <img th:src="@{${boss.elementImageList[stat.index]}}" th:alt="${element}" width="30" height="30"/>
+                    <span th:text="${element}"></span>
+                </span>
+        </td>
     </tr>
     </tbody>
 </table>

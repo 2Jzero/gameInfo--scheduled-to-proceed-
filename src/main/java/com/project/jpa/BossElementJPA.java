@@ -28,7 +28,7 @@ public class BossElementJPA {
     private ElementJPA element;
 
     // 길드 보스 속성 유무
-    @Column(name = "boss_element_isActive", length = 2) // 길드보스 순서
+    @Column(name = "boss_element_is_active", length = 2) // 길드보스 순서
     private String isActive; // O, X 로 나눔
 
 }

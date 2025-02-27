@@ -23,6 +23,10 @@ public class MainService {
 
         bossList = bossJpaRepository.mainPage(); // 내일 크롤링부터 다시, 구조 다시 짜야됨
 
+        for (BossInfoDTO boss : bossList) {
+            boss.processElements(); // 문자열을 리스트로 변환
+        }
+
         return bossList;
     }
 }

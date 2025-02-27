@@ -12,12 +12,15 @@ import java.util.List;
 public interface BossJpaRepository extends JpaRepository<GuardJPA, Integer> {
 
     // db의 리스트 화면에 보여줌
-    @Query(value = "select b.boss_name as bossName, b.boss_image as bossImage, " +
-            "e.el_name as elementName, e.el_image as elementImage " +
-            "from boss b " +
-            "join boss_element be on b.boss_id = be.boss_id " +
-            "join element e on  be.element_id = e.el_id ",
+    @Query(value = "SELECT b.boss_name AS bossName, b.boss_image AS bossImage, " +
+            "GROUP_CONCAT(e.el_name ORDER BY e.el_name SEPARATOR ', ') AS elementNames, " +
+            "GROUP_CONCAT(e.el_image ORDER BY e.el_name SEPARATOR ', ') AS elementImages " +
+            "FROM boss b " +
+            "JOIN boss_element be ON b.boss_id = be.boss_id " +
+            "JOIN element e ON be.element_id = e.el_id " +
+            "WHERE be.boss_element_is_active = 'O' " +
+            "GROUP BY b.boss_id",
             nativeQuery = true)
-    public List<BossInfoDTO> mainPage();
+    List<BossInfoDTO> mainPage();
 
 }
